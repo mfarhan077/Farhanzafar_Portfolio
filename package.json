@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://mfarhan077.github.io/farhanzafarprotfolio",
+  "homepage": "https://mfarhan077.github.io/Farhanzafar_Portfolio",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

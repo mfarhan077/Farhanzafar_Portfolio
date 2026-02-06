@@ -99,7 +99,7 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
                         >
                             <div
                                 className="absolute inset-0 opacity-0 group-hover:opacity-40 rounded-full transition-opacity duration-300"
-                                style={{ background: `radial - gradient(circle, ${skill.color}, transparent)` }}
+                                style={{ background: `radial-gradient(circle, ${skill.color}, transparent)` }}
                             ></div>
                             <div className="text-xl md:text-2xl transition-colors duration-300" style={{ color: skill.color }}>
                                 {skill.icon}
@@ -107,7 +107,7 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
 
                             {/* Certified/Course Indicator Glow */}
                             {skill.course && (
-                                <div className="absolute inset-0 rounded-full border border-accent/50 shadow-[0_0_15px_{theme('colors.accent')}] animate-pulse-slow"></div>
+                                <div className="absolute inset-0 rounded-full border border-accent/50 shadow-[0_0_15px_#6366f1] animate-pulse-slow"></div>
                             )}
 
                             {/* Planet Name & Course Tooltip */}
