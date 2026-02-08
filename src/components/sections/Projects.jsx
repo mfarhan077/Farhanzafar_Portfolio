@@ -53,15 +53,24 @@ const ProjectCard = ({ project, index }) => {
                     >
                         <FaExternalLinkAlt className="text-xs" /> Live Demo
                     </a>
-                    <a
-                        href={project.codeLink || project.githubLink}
-                        className="p-2.5 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-300 border border-white/5"
-                        title="View Code"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <FaGithub className="text-lg" />
-                    </a>
+                    {/* GitHub / Code Link */}
+                    {(() => {
+                        const gitUrl = project.codeLink || project.githubLink;
+                        if (gitUrl && gitUrl !== '#' && gitUrl !== '') {
+                            return (
+                                <a
+                                    href={gitUrl}
+                                    className="p-2.5 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-300 border border-white/5"
+                                    title="View Code"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <FaGithub className="text-lg" />
+                                </a>
+                            );
+                        }
+                        return null;
+                    })()}
                 </div>
             </div>
         </motion.div>
