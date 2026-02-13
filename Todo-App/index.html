@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for a premium feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="user-profile">
+                <div class="user-avatar">MK</div>
+                <div class="user-info">
+                    <span class="user-name">Muhammad</span>
+                    <span class="user-email">farhan@example.com</span>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li class="active" data-view="tasks">
+                    <span class="icon">☀️</span> My Day
+                </li>
+                <li data-view="important">
+                    <span class="icon">⭐</span> Important
+                </li>
+                <li data-view="tasks">
+                    <span class="icon">🏠</span> All Tasks
+                </li>
+                <li data-view="personal">
+                    <span class="icon">👤</span> Personal
+                </li>
+                <li data-view="work">
+                    <span class="icon">💼</span> Work
+                </li>
+                <li data-view="history">
+                    <span class="icon">📜</span> History
+                </li>
+            </ul>
+        </nav>
+
+        <!-- To-Do App Container (Center) -->
+        <div class="container">
+            <header>
+                <div class="header-top">
+                    <button id="menuToggle" class="mobile-only">☰</button>
+                    <h1 id="viewTitle">My Day</h1>
+                </div>
+                <div id="myDayHeader" class="my-day-header">
+                    <div class="date-display" id="currentDateDisplay"></div>
+                    <button id="startDayBtn" class="premium-btn">Start Day</button>
+                    <div class="progress-container">
+                        <span class="progress-text"></span>
+                        <div class="progress-track">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Search is now integrated better, maybe toggleable -->
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search tasks...">
+                    <button id="searchIconBtn">🔍</button>
+                </div>
+            </header>
+
+            <div class="input-area">
+                <input type="text" id="taskInput" placeholder="Add a task...">
+                <div class="input-controls">
+                    <select id="categorySelect">
+                        <option value="Personal">🏠 Personal</option>
+                        <option value="Work">💼 Work</option>
+                        <option value="Important">📝 important</option>
+                    </select>
+                    <input type="datetime-local" id="dateInput">
+                    <button id="importantToggle" title="Mark as Important">☆</button>
+                </div>
+                <button id="addBtn">+</button>
+            </div>
+
+            <ul id="taskList">
+                <!-- Tasks will appear here -->
+            </ul>
+        </div>
+
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
