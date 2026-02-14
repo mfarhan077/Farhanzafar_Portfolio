@@ -26,42 +26,60 @@ const skills = [
 const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
     return (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <motion.div
-                className="rounded-full border border-terminal-cyan/20 border-dashed"
+            {/* The Ring Path (Visual only - Static) */}
+            <div
+                className="absolute rounded-full border border-terminal-cyan/20 border-dashed"
                 style={{
                     width: radius * 2,
                     height: radius * 2,
                 }}
-                animate={{ rotate: 360 * direction }}
-                transition={{
-                    duration: speed,
-                    repeat: Infinity,
-                    ease: "linear",
+            ></div>
+
+            {/* The Rotating Container (Carries the icons) */}
+            <div
+                className="absolute rounded-full"
+                style={{
+                    width: radius * 2,
+                    height: radius * 2,
+                    animation: `orbit ${speed}s linear infinite`,
+                    animationDirection: direction === 1 ? 'normal' : 'reverse',
                 }}
             >
                 {skills.map((skill, i) => {
                     const angle = (360 / skills.length) * i;
+                    // Position items on the circle using absolute positioning and transform
+                    // But since the parent is rotating, we just need to place them at the correct angle initially
+                    // and then counter-rotate the ICON itself so it stays upright.
+
                     return (
                         <div
                             key={i}
-                            className="absolute"
+                            className="absolute flex items-center justify-center"
                             style={{
                                 top: '50%',
                                 left: '50%',
-                                transform: `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg)`,
+                                width: '3rem',
+                                height: '3rem',
+                                margin: '-1.5rem', // Center the icon container
+                                transform: `rotate(${angle}deg) translate(${radius}px)`,
                             }}
                         >
-                            <motion.div
-                                animate={{ rotate: -360 * direction }}
-                                transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
+                            {/* Counter-rotating Inner Container to keep icon upright */}
+                            <div
                                 className="relative group cursor-pointer pointer-events-auto"
-                                whileHover={{ scale: 1.2 }}
+                                style={{
+                                    animation: `orbit-reverse ${speed}s linear infinite`,
+                                    animationDirection: direction === 1 ? 'normal' : 'reverse',
+                                }}
                             >
-                                <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-dark-card border border-slate-700 shadow-lg transition-all duration-300 group-hover:border-terminal-cyan group-hover:shadow-[0_0_20px_rgba(88,166,255,0.4)]">
+                                <motion.div
+                                    whileHover={{ scale: 1.2 }}
+                                    className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-dark-card border border-slate-700 shadow-lg transition-all duration-300 group-hover:border-terminal-cyan group-hover:shadow-[0_0_20px_rgba(88,166,255,0.4)]"
+                                >
                                     <div className="text-xl md:text-2xl transition-colors duration-300 group-hover:text-white" style={{ color: skill.color }}>
                                         {skill.icon}
                                     </div>
-                                </div>
+                                </motion.div>
 
                                 {/* Terminal Tooltip */}
                                 <div className="absolute top-[-45px] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 pointer-events-none z-50">
@@ -74,21 +92,22 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
                                     {/* Arrow */}
                                     <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-terminal-green absolute left-1/2 -translate-x-1/2 bottom-[-6px]"></div>
                                 </div>
-                            </motion.div>
+                            </div>
                         </div>
                     );
                 })}
-            </motion.div>
+            </div>
         </div>
     );
 };
 
 const Skills = () => {
+    // Slower speeds for "Planetary" feel
     const orbits = [
-        { id: 1, radius: 80, speed: 40, skills: skills.filter(s => s.orbit === 1) },
-        { id: 2, radius: 150, speed: 55, skills: skills.filter(s => s.orbit === 2) },
-        { id: 3, radius: 220, speed: 70, skills: skills.filter(s => s.orbit === 3) },
-        { id: 4, radius: 290, speed: 85, skills: skills.filter(s => s.orbit === 4) },
+        { id: 1, radius: 80, speed: 20, skills: skills.filter(s => s.orbit === 1) },
+        { id: 2, radius: 150, speed: 35, skills: skills.filter(s => s.orbit === 2) },
+        { id: 3, radius: 220, speed: 50, skills: skills.filter(s => s.orbit === 3) },
+        { id: 4, radius: 290, speed: 65, skills: skills.filter(s => s.orbit === 4) },
     ];
 
     return (
@@ -102,9 +121,7 @@ const Skills = () => {
                     viewport={{ once: true }}
                     className="text-4xl md:text-6xl font-black text-white font-mono tracking-tighter mb-4"
                 >
-                    <span className="text-terminal-cyan">&lt;</span>
-                    SKILLS_ORBIT
-                    <span className="text-terminal-cyan">/&gt;</span>
+                    TECH STACK
                 </motion.h2>
                 <motion.p
                     initial={{ opacity: 0 }}
@@ -112,12 +129,12 @@ const Skills = () => {
                     transition={{ delay: 0.2 }}
                     className="text-terminal-green font-mono text-sm tracking-[0.2em] uppercase"
                 >
-                    System Capabilities Initialized
+                    Zero-Gravity Arsenal
                 </motion.p>
             </div>
 
             {/* Orbit Container */}
-            <div className="relative w-full h-[600px] flex items-center justify-center scale-75 md:scale-100">
+            <div className="relative w-full h-[500px] md:h-[700px] flex items-center justify-center scale-[0.6] sm:scale-75 md:scale-100 overflow-visible transition-transform duration-500 will-change-transform">
                 {/* Central Core - React */}
                 <motion.div
                     initial={{ scale: 0 }}
@@ -135,7 +152,7 @@ const Skills = () => {
                         radius={orbit.radius}
                         speed={orbit.speed}
                         skills={orbit.skills}
-                        direction={i % 2 === 0 ? 1 : -1}
+                        direction={i % 2 === 0 ? 1 : 1} // All same direction or alternating? User asked for "planetary", usually same direction but different speeds looks best. Let's alternate for visual balance.
                     />
                 ))}
             </div>

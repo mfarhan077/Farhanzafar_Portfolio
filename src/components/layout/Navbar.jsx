@@ -50,7 +50,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-dark-bg/80 backdrop-blur-md border-b border-white/5 py-4 shadow-lg' : 'bg-transparent py-6'}`}>
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-dark-bg/90 backdrop-blur-md border-b border-white/10 shadow-lg' : 'bg-transparent py-6'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between">
                     {/* Logo */}
@@ -58,24 +58,26 @@ const Navbar = () => {
                         <a
                             href="#home"
                             onClick={(e) => handleNavClick(e, '#home')}
-                            className="text-2xl font-bold text-slate-100 tracking-tighter hover:text-accent transition-colors duration-300"
+                            className="text-xl md:text-2xl font-bold text-slate-100 tracking-tighter hover:text-white transition-colors duration-300 font-mono"
                         >
-                            Farhan<span className="text-accent">Zafar</span>
+                            <span className="text-terminal-cyan">&lt;</span>
+                            FarhanZafar
+                            <span className="text-terminal-cyan"> /&gt;</span>
                         </a>
                     </div>
 
                     {/* Desktop Menu */}
                     <div className="hidden md:block">
-                        <div className="ml-10 flex items-baseline space-x-8">
+                        <div className="ml-10 flex items-center space-x-8">
                             {links.map((link) => (
                                 <a
                                     key={link.name}
                                     href={link.href}
                                     onClick={(e) => handleNavClick(e, link.href)}
-                                    className="text-sm font-medium text-slate-400 hover:text-accent transition-colors duration-300 relative group py-2 cursor-pointer"
+                                    className="text-sm font-medium text-slate-400 hover:text-terminal-green transition-all duration-300 relative group py-2 cursor-pointer font-mono"
                                 >
+                                    <span className="text-terminal-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-1">//</span>
                                     {link.name}
-                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
                                 </a>
                             ))}
                         </div>
@@ -86,7 +88,7 @@ const Navbar = () => {
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             type="button"
-                            className="text-slate-200 hover:text-accent focus:outline-none transition-colors p-2"
+                            className="text-slate-200 hover:text-terminal-cyan focus:outline-none transition-colors p-2"
                             aria-label="Toggle menu"
                         >
                             {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -103,7 +105,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
                         exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
                         transition={{ duration: 0.3 }}
-                        className="md:hidden fixed inset-0 bg-dark-bg/95 z-40 flex flex-col items-center justify-center"
+                        className="md:hidden fixed inset-0 bg-dark-bg/95 z-40 flex flex-col items-center justify-center border-b border-terminal-cyan/20"
                     >
                         <div className="space-y-8 text-center">
                             {links.map((link, index) => (
@@ -116,9 +118,11 @@ const Navbar = () => {
                                     <a
                                         href={link.href}
                                         onClick={(e) => handleNavClick(e, link.href)}
-                                        className="text-3xl font-bold text-slate-300 hover:text-accent transition-colors duration-300 block tracking-tight cursor-pointer"
+                                        className="text-3xl font-bold text-slate-300 hover:text-terminal-green transition-colors duration-300 block tracking-tight cursor-pointer font-mono"
                                     >
+                                        <span className="text-terminal-cyan mr-2">&lt;</span>
                                         {link.name}
+                                        <span className="text-terminal-cyan ml-2">/&gt;</span>
                                     </a>
                                 </motion.div>
                             ))}

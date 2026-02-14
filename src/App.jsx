@@ -10,10 +10,10 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen text-slate-200 relative">
-        {!isLoaded && <Loader onComplete={() => setIsLoaded(true)} />}
-        <div className={`transition-opacity duration-700 ${!isLoaded ? "opacity-0" : "opacity-100"}`}>
-          <StarryBackground />
+      <div className="min-h-screen bg-dark-bg text-slate-200 relative">
+        {/* <Loader onComplete={() => setIsLoaded(true)} /> */}
+        <div className="opacity-100">
+          {/* <StarryBackground /> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/project/:id" element={<ProjectDemo />} />

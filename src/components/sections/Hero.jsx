@@ -98,6 +98,28 @@ const Hero = () => {
         return () => clearTimeout(timer);
     }, [text, isDeleting, loopNum, roles, typingSpeed]);
 
+    const handleViewWork = (e) => {
+        e.preventDefault();
+        console.log("> Executing ./view_work.exe...");
+        const projectsSection = document.getElementById("projects");
+        if (projectsSection) {
+            projectsSection.scrollIntoView({ behavior: "smooth" });
+        } else {
+            console.error("Error: Target #projects not found.");
+        }
+    };
+
+    const handleContact = (e) => {
+        e.preventDefault();
+        console.log("> Initializing contact_me() protocol...");
+        const contactSection = document.getElementById("contact");
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: "smooth" });
+        } else {
+            console.error("Error: Target #contact not found.");
+        }
+    };
+
     return (
         <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-transparent pt-20 md:pt-0">
             {/* Background Atmosphere */}
@@ -119,16 +141,16 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.6 }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-accent text-xs tracking-widest uppercase font-bold mb-6"
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded bg-dark-card/50 border border-terminal-green/30 text-terminal-green text-xs font-mono mb-6"
                     >
-                        <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-                        Available for hire
+                        <span className="w-2 h-2 rounded-full bg-terminal-green animate-pulse"></span>
+                        [STATUS: ONLINE]
                     </motion.div>
 
-                    <h1 className="font-black text-white mb-0 tracking-tighter leading-[0.9] text-[clamp(3.5rem,8vw,6rem)]">
+                    <h1 className="font-black text-white mb-0 tracking-tighter leading-[0.9] text-[clamp(2.5rem,8vw,6rem)]">
                         FARHAN
                     </h1>
-                    <h1 className="font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-400 to-white mb-6 tracking-tighter leading-[0.9] text-[clamp(3.5rem,8vw,6rem)]">
+                    <h1 className="font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-400 to-white mb-6 tracking-tighter leading-[0.9] text-[clamp(2.5rem,8vw,6rem)]">
                         ZAFAR
                     </h1>
 
@@ -158,9 +180,9 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7, duration: 0.6 }}
-                        className="text-slate-400 max-w-lg text-base md:text-lg leading-relaxed mb-10"
+                        className="text-slate-400 max-w-lg text-base md:text-lg leading-relaxed mb-10 font-mono"
                     >
-                        Architecting scalable digital solutions with <span className="text-accent font-medium">React</span>, <span className="text-purple-400 font-medium">Next.js</span>, <span className="text-green-400 font-medium">Node.js</span>, and Cloud Infrastructure. Building full-cycle applications from pixel-perfect UIs to robust backends.
+                        Architecting scalable digital solutions with <span className="text-accent font-bold">React</span>, <span className="text-purple-400 font-bold">Next.js</span>, <span className="text-green-400 font-bold">Node.js</span>, and Cloud Infrastructure. Building full-cycle applications from pixel-perfect UIs to robust backends.
                     </motion.p>
 
                     <motion.div
@@ -169,23 +191,24 @@ const Hero = () => {
                         transition={{ delay: 0.8, duration: 0.6 }}
                         className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
                     >
-                        <motion.a
-                            href="#projects"
+                        <motion.button
+                            onClick={handleViewWork}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="px-8 py-4 bg-accent text-slate-950 font-bold text-center rounded hover:bg-white transition-colors flex items-center justify-center gap-2 group w-full sm:w-auto shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)]"
+                            className="px-8 py-4 bg-accent/10 border border-accent text-accent font-mono font-bold text-center rounded hover:bg-accent hover:text-dark-bg transition-all flex items-center justify-center gap-2 group w-full sm:w-auto shadow-[0_0_15px_rgba(88,166,255,0.2)] hover:shadow-[0_0_25px_rgba(88,166,255,0.4)] cursor-pointer"
                         >
-                            <span>VIEW WORK</span>
-                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                        </motion.a>
-                        <motion.a
-                            href="#contact"
+                            <span>&gt; ./view_work</span>
+                            <span className="hidden group-hover:inline-block animate-pulse">_</span>
+                        </motion.button>
+                        <motion.button
+                            onClick={handleContact}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="px-8 py-4 bg-transparent border border-white/10 text-white font-bold text-center rounded hover:bg-white/5 transition-colors flex items-center justify-center w-full sm:w-auto backdrop-blur-sm"
+                            className="px-8 py-4 bg-transparent border border-slate-700 text-slate-300 font-mono font-bold text-center rounded hover:border-terminal-green hover:text-terminal-green hover:shadow-[0_0_15px_rgba(46,160,67,0.2)] transition-all flex items-center justify-center w-full sm:w-auto backdrop-blur-sm group cursor-pointer"
                         >
-                            <span>CONTACT ME</span>
-                        </motion.a>
+                            <span>contact_me()</span>
+                            <span className="w-2 h-4 bg-terminal-green ml-2 opacity-0 group-hover:opacity-100 animate-pulse"></span>
+                        </motion.button>
                     </motion.div>
                 </motion.div>
 
@@ -197,7 +220,7 @@ const Hero = () => {
                     className="relative flex justify-center items-center py-12 md:py-0 w-full order-1 md:order-2"
                 >
                     {/* Responsive Scaling Container */}
-                    <div className="relative w-[clamp(280px,50vw,500px)] h-[clamp(280px,50vw,500px)] flex items-center justify-center">
+                    <div className="relative w-[clamp(280px,90vw,500px)] h-[clamp(280px,90vw,500px)] flex items-center justify-center">
                         {/* Glowing Core Background */}
                         <div className="absolute inset-[15%] bg-accent/20 rounded-full blur-[60px] animate-pulse-slow"></div>
 
