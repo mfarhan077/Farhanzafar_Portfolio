@@ -11,13 +11,15 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-dark-bg text-slate-200 relative">
-        {/* <Loader onComplete={() => setIsLoaded(true)} /> */}
-        <div className="opacity-100">
-          {/* <StarryBackground /> */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/project/:id" element={<ProjectDemo />} />
-          </Routes>
+        {!isLoaded && <Loader onComplete={() => setIsLoaded(true)} />}
+        <div className={`transition-opacity duration-1000 ${!isLoaded ? "opacity-0" : "opacity-100"}`}>
+          <StarryBackground />
+          <div className="relative z-10">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/project/:id" element={<ProjectDemo />} />
+            </Routes>
+          </div>
         </div>
       </div>
     </Router>
