@@ -106,8 +106,8 @@ const Loader = ({ onComplete }) => {
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
                             className={`font-mono text-lg tracking-widest ${status === 'finalizing'
-                                    ? 'text-terminal-green font-bold text-shadow-green'
-                                    : 'text-slate-300'
+                                ? 'text-terminal-green font-bold text-shadow-green'
+                                : 'text-slate-300'
                                 }`}
                         >
                             {currentText}

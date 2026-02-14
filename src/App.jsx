@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Loader from './components/layout/Loader';
 import Home from './pages/Home';
 import ProjectDemo from './pages/ProjectDemo';
+import ThankYou from './pages/ThankYou';
 import StarryBackground from './components/layout/StarryBackground';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/project/:id" element={<ProjectDemo />} />
+              <Route path="/thank-you" element={<ThankYou />} /> {/* Added Route for ThankYou */}
             </Routes>
           </div>
         </div>

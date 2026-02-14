@@ -1,22 +1,52 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaPaperPlane, FaTerminal } from 'react-icons/fa';
+import { FaPaperPlane, FaTerminal, FaEnvelope, FaUser, FaCommentAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [status, setStatus] = useState('IDLE'); // IDLE, SENDING, SUCCESS, ERROR
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('> Transmitting data packet:', formData);
-        alert('Signal transmitted successfully! (Demo)');
+        setIsSubmitting(true);
+        setStatus('SENDING');
+
+        // EmailJS Configuration
+        // These keys should be set in your .env file
+        const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+        try {
+            // Check if keys are present
+            if (!SERVICE_ID || SERVICE_ID === 'your_service_id_here') {
+                console.warn("EmailJS keys are missing. Simulating success for demo.");
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            } else {
+                await emailjs.send(SERVICE_ID, TEMPLATE_ID, formData, PUBLIC_KEY);
+            }
+
+            setStatus('SUCCESS');
+            setTimeout(() => {
+                navigate('/thank-you');
+            }, 500);
+        } catch (error) {
+            console.error("EmailJS Error:", error);
+            setStatus('ERROR');
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -24,123 +54,163 @@ const Contact = () => {
 
             <div className="w-full max-w-4xl px-4 relative z-10">
 
+                {/* Section Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mb-12 md:mb-16"
+                    className="text-center mb-16"
                 >
-                    <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight font-mono">
-                        <span className="text-terminal-cyan">&lt;</span>
-                        Contact_Me
-                        <span className="text-terminal-cyan"> /&gt;</span>
+                    <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tighter">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-terminal-green to-emerald-600">
+                            &lt;CONTACT /&gt;
+                        </span>
                     </h2>
-                    <div className="w-20 h-1.5 bg-gradient-to-r from-terminal-cyan to-terminal-green mx-auto rounded-full mb-6"></div>
-                    <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg font-mono">
-                        Initialize a connection request. Open to collaboration on new projects.
+                    <p className="text-slate-400 font-mono text-sm md:text-base max-w-2xl mx-auto">
+                        Ready to collaborate? Initialize a secure connection functionality below.
                     </p>
                 </motion.div>
 
-                {/* Terminal Window */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="bg-[#0a0a16]/90 backdrop-blur-xl rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_0_40px_rgba(0,0,0,0.5)] mx-auto relative group"
-                >
-                    {/* Glow Effect */}
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-terminal-cyan/20 to-terminal-green/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10"></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-                    {/* Terminal Header */}
-                    <div className="bg-slate-900/80 px-4 py-3 flex items-center justify-between border-b border-white/5">
-                        <div className="flex gap-2">
-                            <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors"></div>
-                            <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors"></div>
-                            <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors"></div>
-                        </div>
-                        <div className="flex items-center gap-2 text-slate-500 font-mono text-xs select-none tracking-wider">
-                            <FaTerminal size={10} />
-                            <span>user@portfolio: ~/contact-form</span>
-                        </div>
-                        <div className="w-14"></div>
-                    </div>
+                    {/* Left Panel: Contact Info / Terminal Visual */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="bg-dark-card/50 backdrop-blur border border-slate-800 rounded-2xl p-8 flex flex-col justify-between h-full"
+                    >
+                        <div>
+                            <div className="flex items-center gap-3 mb-8 text-terminal-green/80 border-b border-slate-800 pb-4">
+                                <FaTerminal />
+                                <span className="font-mono text-sm">secure_channel.sh</span>
+                            </div>
 
-                    {/* Terminal Body */}
-                    <div className="p-6 md:p-10 font-mono h-full flex flex-col justify-between relative">
-                        {/* Line Numbers Background (Simulated) */}
-                        <div className="absolute left-4 top-10 bottom-10 w-6 flex flex-col items-center text-slate-800 text-xs select-none font-mono leading-relaxed opacity-50 hidden md:flex">
-                            {Array.from({ length: 15 }).map((_, i) => <span key={i}>{i + 1}</span>)}
+                            <div className="space-y-6 font-mono text-sm text-slate-300">
+                                <p>
+                                    <span className="text-purple-400">const</span> <span className="text-yellow-300">availability</span> = <span className="text-green-400">"OPEN_TO_WORK"</span>;
+                                </p>
+                                <p>
+                                    <span className="text-purple-400">const</span> <span className="text-yellow-300">location</span> = <span className="text-green-400">"Remote / Hybrid"</span>;
+                                </p>
+                                <p className="text-slate-500">
+                                    // Awaiting incoming transmission...
+                                </p>
+                            </div>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-8 md:pl-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {/* Name Input */}
-                                <div className="relative group">
-                                    <label className="block text-slate-500 text-xs mb-2">
-                                        <span className="text-purple-400">const</span> <span className="text-blue-400">name</span> <span className="text-slate-400">=</span>
-                                    </label>
+                        <div className="mt-12">
+                            <h3 className="text-white font-bold mb-4">Connect Directly:</h3>
+                            <a href="mailto:contact@farhanzafar.dev" className="flex items-center gap-3 text-slate-400 hover:text-terminal-green transition-colors mb-2">
+                                <FaEnvelope /> contact@farhanzafar.dev
+                            </a>
+                        </div>
+                    </motion.div>
+
+                    {/* Right Panel: Form */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="relative"
+                    >
+                        <form onSubmit={handleSubmit} className="space-y-6">
+
+                            {/* Name Input */}
+                            <div className="group">
+                                <label className="block text-xs font-mono text-slate-500 mb-2 uppercase tracking-wider">Identity</label>
+                                <div className="relative">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600">
+                                        <FaUser />
+                                    </span>
                                     <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                        className="w-full bg-dark-bg/50 border border-slate-700 rounded p-4 text-terminal-green focus:outline-none focus:border-terminal-cyan focus:shadow-[0_0_10px_rgba(88,166,255,0.2)] transition-all font-mono placeholder:text-slate-700"
-                                        placeholder='"Enter Name"'
+                                        disabled={isSubmitting}
+                                        className="w-full bg-dark-bg/50 border border-slate-700 rounded-lg p-4 pl-12 text-white focus:outline-none focus:border-terminal-green focus:shadow-[0_0_15px_rgba(74,222,128,0.1)] transition-all font-mono placeholder:text-slate-700 disabled:opacity-50"
+                                        placeholder="Enter Name"
                                     />
                                 </div>
+                            </div>
 
-                                {/* Email Input */}
-                                <div className="relative group">
-                                    <label className="block text-slate-500 text-xs mb-2">
-                                        <span className="text-purple-400">const</span> <span className="text-blue-400">email</span> <span className="text-slate-400">=</span>
-                                    </label>
+                            {/* Email Input */}
+                            <div className="group">
+                                <label className="block text-xs font-mono text-slate-500 mb-2 uppercase tracking-wider">Frequency (Email)</label>
+                                <div className="relative">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600">
+                                        <FaEnvelope />
+                                    </span>
                                     <input
                                         type="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
-                                        className="w-full bg-dark-bg/50 border border-slate-700 rounded p-4 text-terminal-green focus:outline-none focus:border-terminal-cyan focus:shadow-[0_0_10px_rgba(88,166,255,0.2)] transition-all font-mono placeholder:text-slate-700"
-                                        placeholder='"Enter Email"'
+                                        disabled={isSubmitting}
+                                        className="w-full bg-dark-bg/50 border border-slate-700 rounded-lg p-4 pl-12 text-white focus:outline-none focus:border-terminal-green focus:shadow-[0_0_15px_rgba(74,222,128,0.1)] transition-all font-mono placeholder:text-slate-700 disabled:opacity-50"
+                                        placeholder="Enter Email"
                                     />
                                 </div>
                             </div>
 
                             {/* Message Input */}
-                            <div className="relative group">
-                                <label className="block text-slate-500 text-xs mb-2">
-                                    <span className="text-purple-400">const</span> <span className="text-blue-400">message</span> <span className="text-slate-400">=</span>
-                                </label>
-                                <textarea
-                                    name="message"
-                                    rows="5"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-dark-bg/50 border border-slate-700 rounded p-4 text-emerald-300 focus:outline-none focus:border-terminal-cyan focus:shadow-[0_0_10px_rgba(88,166,255,0.2)] transition-all font-mono placeholder:text-slate-700 resize-none leading-relaxed"
-                                    placeholder={`\`\n  Type your message here...\n\``}
-                                ></textarea>
+                            <div className="group">
+                                <label className="block text-xs font-mono text-slate-500 mb-2 uppercase tracking-wider">Payload (Message)</label>
+                                <div className="relative">
+                                    <span className="absolute left-4 top-6 text-slate-600">
+                                        <FaCommentAlt />
+                                    </span>
+                                    <textarea
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        required
+                                        disabled={isSubmitting}
+                                        rows="4"
+                                        className="w-full bg-dark-bg/50 border border-slate-700 rounded-lg p-4 pl-12 text-white focus:outline-none focus:border-terminal-green focus:shadow-[0_0_15px_rgba(74,222,128,0.1)] transition-all font-mono placeholder:text-slate-700 resize-none leading-relaxed disabled:opacity-50"
+                                        placeholder="Initialize transmission..."
+                                    ></textarea>
+                                </div>
                             </div>
 
                             {/* Submit Button */}
-                            <div className="flex justify-between items-center pt-2">
-                                <div className="text-xs text-slate-600 hidden sm:block">
-                                    <span className="text-purple-400">return</span> <span className="text-yellow-300">await</span> transmission.send();
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="group relative inline-flex items-center justify-center gap-3 px-8 py-3 bg-terminal-cyan/10 border border-terminal-cyan text-terminal-cyan font-bold rounded hover:bg-terminal-cyan hover:text-dark-bg transition-all duration-300 shadow-[0_0_10px_rgba(88,166,255,0.2)] hover:shadow-[0_0_20px_rgba(88,166,255,0.5)] font-mono"
-                                >
-                                    <span>[ EXECUTE ]</span>
-                                    <FaPaperPlane className="text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                </button>
-                            </div>
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                disabled={isSubmitting}
+                                type="submit"
+                                className={`w-full py-4 font-mono font-bold rounded-lg flex items-center justify-center gap-2 transition-all 
+                                    ${isSubmitting
+                                        ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                                        : 'bg-terminal-green/10 text-terminal-green border border-terminal-green hover:bg-terminal-green hover:text-dark-bg hover:shadow-[0_0_20px_rgba(74,222,128,0.4)]'
+                                    }`}
+                            >
+                                {isSubmitting ? (
+                                    <span>TRANSMITTING...</span>
+                                ) : (
+                                    <>
+                                        <span>[ EXECUTE SEND ]</span>
+                                        <FaPaperPlane className="text-sm" />
+                                    </>
+                                )}
+                            </motion.button>
+
+                            {status === 'ERROR' && (
+                                <p className="text-red-500 font-mono text-xs text-center mt-2">
+                                    Connection Error. Please try again.
+                                </p>
+                            )}
+
                         </form>
-                    </div>
-                </motion.div>
+                    </motion.div>
+
+                </div>
+
             </div>
+
         </section>
     );
 };
