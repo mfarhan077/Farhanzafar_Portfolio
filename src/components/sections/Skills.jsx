@@ -27,7 +27,7 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
     return (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <motion.div
-                className="rounded-full border border-slate-800/60"
+                className="rounded-full border border-terminal-cyan/20 border-dashed"
                 style={{
                     width: radius * 2,
                     height: radius * 2,
