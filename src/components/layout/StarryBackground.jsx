@@ -49,10 +49,10 @@ const StarryBackground = () => {
         };
 
         const draw = () => {
-            // 1. Deep Navy to Dark Blue Gradient
+            // 1. Dark Terminal Background
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#0a192f'); // Deep Navy Blue
-            gradient.addColorStop(1, '#020c1b'); // Darker, almost black blue
+            gradient.addColorStop(0, '#0d1117'); // GitHub Dark Dim
+            gradient.addColorStop(1, '#010409'); // Even darker
 
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -94,12 +94,16 @@ const StarryBackground = () => {
                 if (p.y < 0) p.y = canvas.height;
                 if (p.y > canvas.height) p.y = 0;
 
-                // Draw Glowing Node
+                // Draw Glowing Node (Terminal Green / Cyan)
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, currentSize, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(180, 200, 235, ${currentOpacity})`; // Softer blue-white
+                // Alternate between Green and Cyan based on index for a "Matrix/Code" feel
+                const isSystemNode = i % 2 === 0;
+                const color = isSystemNode ? `rgba(46, 160, 67, ${currentOpacity})` : `rgba(88, 166, 255, ${currentOpacity})`; // Green / Blue
+
+                ctx.fillStyle = color;
                 ctx.shadowBlur = 8; // Glow effect
-                ctx.shadowColor = `rgba(100, 180, 255, ${currentOpacity * 0.8})`;
+                ctx.shadowColor = isSystemNode ? `rgba(46, 160, 67, ${currentOpacity * 0.8})` : `rgba(88, 166, 255, ${currentOpacity * 0.8})`;
                 ctx.fill();
                 ctx.shadowBlur = 0; // Reset for lines
 
@@ -115,7 +119,8 @@ const StarryBackground = () => {
                         const lineBaseAlpha = 0.12 * (1 - distance / connectionDistance);
                         const fadeFactor = (currentOpacity + p2.opacity) / 2;
 
-                        ctx.strokeStyle = `rgba(120, 160, 210, ${lineBaseAlpha * fadeFactor * 4})`; // Soft blue lines
+                        // Lines should be subtle green/cyan mix
+                        ctx.strokeStyle = `rgba(56, 139, 253, ${lineBaseAlpha * fadeFactor * 4})`;
                         ctx.lineWidth = 0.4;
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);

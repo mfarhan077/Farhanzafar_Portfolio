@@ -10,7 +10,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen text-slate-200 relative bg-dark-bg">
+      <div className="min-h-screen text-slate-200 relative">
         {!isLoaded && <Loader onComplete={() => setIsLoaded(true)} />}
         <div className={`transition-opacity duration-700 ${!isLoaded ? "opacity-0" : "opacity-100"}`}>
           <StarryBackground />
