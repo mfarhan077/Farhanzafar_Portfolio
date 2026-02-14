@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import etherImg from '../../assets/images/ether-ecommerce.png';
 import todoAppImg from '../../assets/images/todoapp.jpeg';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
@@ -11,66 +12,55 @@ const ProjectCard = ({ project, index }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
-            whileHover={{ y: -8, boxShadow: "0 20px 40px -15px rgba(99, 102, 241, 0.2)" }} // Premium Lift + Glow Shadow
-            className="group relative rounded-xl overflow-hidden bg-dark-card border border-white/5 hover:border-accent/40 transition-all duration-300 h-full flex flex-col shadow-lg shadow-black/20"
+            className="group relative rounded-2xl overflow-hidden bg-[#0a0a16] border border-white/5 hover:border-white/10 transition-all duration-300 flex flex-col h-full shadow-xl hover:shadow-2xl hover:shadow-cyan-900/20"
         >
             {/* Image Container */}
-            <div className="h-48 overflow-hidden relative border-b border-white/5">
-                <motion.img
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.5 }}
+            <div className="relative aspect-[16/10] overflow-hidden w-full">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-transparent to-transparent z-10 opacity-60"></div>
+                <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
             </div>
 
-            {/* Content Content */}
-            <div className="p-6 flex flex-col flex-grow">
-                <div className="mb-4">
-                    <span className="text-accent text-xs font-semibold tracking-wider uppercase mb-2 block">{project.category}</span>
-                    <h3 className="text-xl font-bold text-slate-100 group-hover:text-accent transition-colors duration-300">{project.title}</h3>
-                </div>
+            {/* Content Container */}
+            <div className="p-6 flex flex-col flex-grow relative z-20">
+                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300">
+                    {project.title}
+                </h3>
 
-                <p className="text-slate-400 mb-6 text-sm leading-relaxed flex-grow">
+                <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow line-clamp-3">
                     {project.description}
                 </p>
 
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tags.map(tag => (
-                        <span key={tag} className="px-2.5 py-1 text-[11px] font-medium text-slate-300 bg-slate-800/50 rounded-md border border-white/5">
-                            {tag}
-                        </span>
-                    ))}
+                {/* Read More Link */}
+                <div className="mb-6">
+                    <Link to={`/project/${project.id}`} className="text-cyan-400 text-sm font-semibold cursor-pointer hover:underline">
+                        Read More...
+                    </Link>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-3 mt-auto">
-                    <a
-                        href={project.demoLink}
-                        className="flex-1 py-2.5 bg-accent text-white rounded-lg font-medium text-sm flex items-center justify-center gap-2 hover:bg-accent-hover transition-all duration-300 shadow-lg shadow-accent/20"
+                {/* Action Buttons - Dual Layout */}
+                <div className="grid grid-cols-2 gap-4 mt-auto">
+                    <Link
+                        to={`/project/${project.id}`}
+                        className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-cyan-950/30 border border-cyan-500/30 text-cyan-400 text-sm font-bold hover:bg-cyan-500/10 hover:border-cyan-400 transition-all duration-300 group/btn"
                     >
-                        <FaExternalLinkAlt className="text-xs" /> Live Demo
+                        <FaExternalLinkAlt className="text-xs group-hover/btn:-translate-y-0.5 transition-transform" />
+                        Live Demo
+                    </Link>
+
+                    <a
+                        href={project.codeLink || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-purple-500/30 text-purple-400 text-sm font-bold transition-all duration-300 group/btn ${project.codeLink ? 'bg-purple-950/30 hover:bg-purple-500/10 hover:border-purple-400' : 'opacity-50 cursor-not-allowed bg-transparent'}`}
+                    >
+                        <FaGithub className="text-sm group-hover/btn:-translate-y-0.5 transition-transform" />
+                        Code
                     </a>
-                    {/* GitHub / Code Link */}
-                    {(() => {
-                        const gitUrl = project.codeLink || project.githubLink;
-                        if (gitUrl && gitUrl !== '#' && gitUrl !== '') {
-                            return (
-                                <a
-                                    href={gitUrl}
-                                    className="p-2.5 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-300 border border-white/5"
-                                    title="View Code"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <FaGithub className="text-lg" />
-                                </a>
-                            );
-                        }
-                        return null;
-                    })()}
                 </div>
             </div>
         </motion.div>
@@ -81,28 +71,32 @@ const Projects = () => {
     // Updated to Full Stack Examples to match the new persona
     const projects = [
         {
+            id: "todo-app",
             title: "To Do List App",
             category: "Full Stack Web App",
-            description: "A real-time task management app built with React and Firebase that lets users add, update, and delete tasks instantly with responsive UI updates. Features include category selection, date picker, and instant state synchronization across devices. Built with TailwindCSS for styling and integrated with Supabase and Stripe for future scalability.",
-            tags: ["React", "Firebase", "TailwindCSS", "Supabase", "Stripe"],
-            demoLink: "https://youtu.be/Rvhac-4EBs8?si=Q3zKYUD-60EeMOq6",
+            description: "A real-time task management app built with React and Firebase that lets users add, update, and delete tasks instantly.",
+            tags: ["React", "Firebase", "TailwindCSS"],
+            demoLink: "#", // Handled by Link now
             githubLink: "https://github.com/mfarhan077",
-            image: todoAppImg // Updated Image
+            codeLink: "https://github.com/mfarhan077",
+            image: todoAppImg
         },
         {
+            id: "nexus-dashboard",
             title: "Nexus Dashboard",
             category: "Cloud Analytics",
-            description: "High-performance analytics dashboard for visualizing cloud infrastructure metrics. Implements real-time data visualization using WebSockets and D3.js.",
-            tags: ["React", "TypeScript", "Node.js", "WebSockets", "D3.js"],
+            description: "High-performance analytics dashboard for visualizing cloud infrastructure metrics using WebSockets and D3.js.",
+            tags: ["React", "TypeScript", "D3.js"],
             demoLink: "#",
             codeLink: "#",
-            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop" // Dashboard
+            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop"
         },
         {
+            id: "ether-ecommerce",
             title: "Ether E-Commerce",
             category: "Full Stack Web App",
-            description: "A modern, headless e-commerce solution with dynamic inventory management, cart functionality, and secure checkout processes.",
-            tags: ["Next.js", "Shopify API", "Framer Motion", "Redux"],
+            description: "A modern, headless e-commerce solution with dynamic inventory management and secure checkout processes.",
+            tags: ["Next.js", "Shopify API", "Redux"],
             demoLink: "#",
             codeLink: "#",
             image: etherImg
@@ -110,31 +104,31 @@ const Projects = () => {
     ];
 
     return (
-        <section id="projects" className="py-24 relative">
+        <section id="projects" className="py-20 md:py-24 relative bg-transparent">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mb-16"
+                    className="text-center mb-12 md:mb-16"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-100 mb-4 tracking-tight">
-                        Featured Work
+                    <h2 className="text-3xl md:text-5xl font-black text-slate-100 mb-4 tracking-tight">
+                        FEATURED <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">WORK</span>
                     </h2>
-                    <div className="w-16 h-1 bg-accent mx-auto rounded-full mb-6"></div>
-                    <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+                    <div className="w-20 h-1.5 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full mb-6"></div>
+                    <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg">
                         Selected projects that demonstrate experience in building scalable web applications.
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {projects.map((project, index) => (
                         <ProjectCard key={index} project={project} index={index} />
                     ))}
                 </div>
 
                 <div className="mt-16 text-center">
-                    <a href="https://github.com/mfarhan077" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-slate-400 hover:text-accent transition-colors duration-300 font-medium group">
+                    <a href="https://github.com/mfarhan077" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors duration-300 font-medium group text-lg">
                         View Full Project Archive <FaGithub className="group-hover:text-white transition-colors" />
                     </a>
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaDocker, FaGitAlt, FaGithub, FaServer, FaDatabase } from 'react-icons/fa';
-import { SiNextdotjs, SiExpress, SiTypescript, SiGraphql, SiMongodb, SiPostgresql, SiJest, SiCypress, SiTailwindcss, SiKubernetes } from 'react-icons/si';
+import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaDocker } from 'react-icons/fa';
+import { SiNextdotjs, SiTypescript, SiGraphql, SiMongodb, SiPostgresql, SiTailwindcss } from 'react-icons/si';
 
 const skills = [
     { name: "React", icon: <FaReact />, color: "#61DAFB", orbit: 1, course: "Advanced React Patterns" },
@@ -19,7 +19,6 @@ const skills = [
 ];
 
 const DriftingParticles = () => {
-    // Generate random particles
     const particles = [...Array(20)].map((_, i) => ({
         x: Math.random() * 100,
         y: Math.random() * 100,
@@ -58,7 +57,6 @@ const DriftingParticles = () => {
     );
 };
 
-// Simplified Implementation for stability
 const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
     return (
         <motion.div
@@ -78,8 +76,6 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
         >
             {skills.map((skill, i) => {
                 const angle = (360 / skills.length) * i;
-                // Position on the circle (relative to center of ring which is radius, radius)
-
                 return (
                     <motion.div
                         key={i}
@@ -88,8 +84,6 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
                             left: '50%',
                             top: '50%',
                             transform: `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg)`,
-                            // The second rotate cancels local rotation so icon is upright,
-                            // BUT the parent ring is rotating. So we need to counter-rotate the icon continuously.
                         }}
                     >
                         <motion.div
@@ -104,13 +98,9 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
                             <div className="text-xl md:text-2xl transition-colors duration-300" style={{ color: skill.color }}>
                                 {skill.icon}
                             </div>
-
-                            {/* Certified/Course Indicator Glow */}
                             {skill.course && (
                                 <div className="absolute inset-0 rounded-full border border-accent/50 shadow-[0_0_15px_#6366f1] animate-pulse-slow"></div>
                             )}
-
-                            {/* Planet Name & Course Tooltip */}
                             <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-center min-w-[140px] bg-slate-900/95 backdrop-blur-xl px-4 py-3 rounded-xl border border-slate-700 pointer-events-none z-50 transform translate-y-2 group-hover:translate-y-0 duration-300 shadow-2xl">
                                 <div className="text-slate-200 text-xs font-bold whitespace-nowrap tracking-wide">{skill.name}</div>
                                 {skill.course && (
@@ -128,7 +118,6 @@ const OrbitRing = ({ radius, speed, skills, direction = 1 }) => {
 };
 
 const Skills = () => {
-    // Group skills by orbit level - Cinematic slow speeds
     const orbits = [
         { id: 1, radius: 80, speed: 45, skills: skills.filter(s => s.orbit === 1) },
         { id: 2, radius: 150, speed: 60, skills: skills.filter(s => s.orbit === 2) },
@@ -137,14 +126,13 @@ const Skills = () => {
     ];
 
     return (
-        <section id="skills" className="py-24 bg-transparent relative overflow-hidden min-h-screen flex flex-col items-center justify-center">
-            {/* Deep Space Gradients - Professional Slate/Indigo */}
-            <div className="absolute inset-0 z-0 opacity-30">
+        <section id="skills" className="py-20 md:py-24 bg-transparent relative overflow-hidden min-h-screen flex flex-col items-center justify-center">
+            <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
                 <div className="absolute top-[-50%] left-[-20%] w-[1000px] h-[1000px] bg-indigo-900/10 rounded-full blur-[200px] animate-pulse"></div>
                 <div className="absolute bottom-[-50%] right-[-20%] w-[1000px] h-[1000px] bg-slate-800/10 rounded-full blur-[200px] animate-pulse delay-1000"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 relative z-10 w-full mb-12 text-center pointer-events-none">
+            <div className="max-w-7xl mx-auto px-4 relative z-10 w-full mb-8 md:mb-12 text-center pointer-events-none">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -159,29 +147,36 @@ const Skills = () => {
                 </motion.div>
             </div>
 
-            {/* Solar System Container */}
-            <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px] flex items-center justify-center perspective-1000">
-
-                {/* Drifting Star Particles in Foreground/Midground */}
-                <DriftingParticles />
-
-                {/* Central Star (Sun) */}
-                <div className="absolute z-20 w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_80px_rgba(99,102,241,0.5)] flex items-center justify-center animate-pulse-slow">
-                    <FaReact className="text-3xl md:text-4xl text-white animate-spin-slow drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+            <div className="relative w-full flex justify-center overflow-visible mt-8 md:mt-0">
+                <div className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] md:w-[600px] md:h-[600px] flex items-center justify-center transform-gpu transition-all duration-500">
+                    <DriftingParticles />
+                    <div className="absolute z-20 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_50px_rgba(99,102,241,0.5)] md:shadow-[0_0_80px_rgba(99,102,241,0.5)] flex items-center justify-center animate-pulse-slow">
+                        <FaReact className="text-2xl sm:text-3xl md:text-4xl text-white animate-spin-slow drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                    </div>
+                    {orbits.map((orbit, i) => (
+                        <div key={i} className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <OrbitRing
+                                radius={orbit.radius}
+                                speed={orbit.speed}
+                                skills={orbit.skills}
+                                direction={i % 2 === 0 ? 1 : -1}
+                            />
+                        </div>
+                    ))}
                 </div>
 
-                {/* Orbit Rings */}
-                {orbits.map((orbit, i) => (
-                    <OrbitRing
-                        key={i}
-                        radius={orbit.radius}
-                        speed={orbit.speed}
-                        skills={orbit.skills}
-                        direction={i % 2 === 0 ? 1 : -1} // Alternate rotation direction
-                    />
-                ))}
+                <style jsx>{`
+                    .transform-gpu {
+                        transform: scale(0.55);
+                    }
+                    @media (min-width: 450px) {
+                        .transform-gpu { transform: scale(0.75); }
+                    }
+                    @media (min-width: 768px) {
+                        .transform-gpu { transform: scale(1); }
+                    }
+                `}</style>
             </div>
-
         </section>
     );
 };

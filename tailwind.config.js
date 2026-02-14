@@ -8,13 +8,16 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        'dark-bg': '#020617', // Slate 950
-        'dark-card': '#0f172a', // Slate 900
-        'accent': '#6366f1', // Indigo 500
-        'accent-hover': '#4f46e5', // Indigo 600
-        'secondary': '#14b8a6', // Teal 500
+        'dark-bg': '#0d1117', // GitHub Dark Dim
+        'dark-card': '#161b22', // GitHub Dark Card
+        'accent': '#58a6ff', // GitHub Blue
+        'accent-hover': '#1f6feb',
+        'secondary': '#2ea043', // GitHub Green
+        'terminal-green': '#0f0',
+        'terminal-cyan': '#0ff',
       },
     },
   },

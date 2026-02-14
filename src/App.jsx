@@ -1,27 +1,26 @@
-import React from 'react';
-import Navbar from './components/layout/Navbar';
-import Hero from './components/sections/Hero';
-import About from './components/sections/About';
-import Skills from './components/sections/Skills';
-import Projects from './components/sections/Projects';
-import Contact from './components/sections/Contact';
-import Footer from './components/layout/Footer';
-import SocialSidebar from './components/layout/SocialSidebar';
+import React, { useState } from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import Loader from './components/layout/Loader';
+import Home from './pages/Home';
+import ProjectDemo from './pages/ProjectDemo';
 import StarryBackground from './components/layout/StarryBackground';
 
 function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
-    <div className="min-h-screen text-slate-200 relative">
-      <StarryBackground />
-      <Navbar />
-      <SocialSidebar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
-      <Footer />
-    </div>
+    <Router>
+      <div className="min-h-screen text-slate-200 relative bg-dark-bg">
+        {!isLoaded && <Loader onComplete={() => setIsLoaded(true)} />}
+        <div className={`transition-opacity duration-700 ${!isLoaded ? "opacity-0" : "opacity-100"}`}>
+          <StarryBackground />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/project/:id" element={<ProjectDemo />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 

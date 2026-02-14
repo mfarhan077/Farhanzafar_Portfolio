@@ -18,15 +18,15 @@ const Footer = () => {
     ];
 
     return (
-        <footer className="bg-[#02020a] border-t border-white/5 relative overflow-hidden pt-16 pb-8">
+        <footer className="bg-[#02020a] border-t border-white/5 relative overflow-hidden pt-12 md:pt-16 pb-8">
             {/* Background Glow */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] mix-blend-screen"></div>
-                <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] mix-blend-screen"></div>
+                <div className="absolute bottom-0 left-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-900/10 rounded-full blur-[80px] md:blur-[120px] mix-blend-screen"></div>
+                <div className="absolute bottom-0 right-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-900/10 rounded-full blur-[80px] md:blur-[120px] mix-blend-screen"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 md:mb-16">
 
                     {/* Brand Column */}
                     <div className="space-y-6">
@@ -76,13 +76,13 @@ const Footer = () => {
                         <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
                             <h4 className="text-white font-bold mb-2">Subscribe to Newsletter</h4>
                             <p className="text-gray-400 text-xs mb-4">Get the latest updates on new projects and tech articles.</p>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-col sm:flex-row">
                                 <input
                                     type="email"
                                     placeholder="Enter your email"
                                     className="bg-dark-bg border border-white/10 rounded-lg px-4 py-2 text-sm text-white w-full focus:outline-none focus:border-accent"
                                 />
-                                <button className="bg-accent text-dark-bg font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors">
+                                <button className="bg-accent text-dark-bg font-bold px-4 py-2 rounded-lg text-sm hover:bg-white transition-colors whitespace-nowrap">
                                     Join
                                 </button>
                             </div>
@@ -92,28 +92,28 @@ const Footer = () => {
                         <ul className="space-y-4 pt-2">
                             <li>
                                 <a href="tel:+923006715352" className="flex items-start gap-4 text-gray-400 hover:text-white transition-colors group">
-                                    <div className="mt-1 w-8 h-8 rounded bg-white/5 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                                    <div className="mt-1 w-8 h-8 rounded bg-white/5 flex items-center justify-center text-accent group-hover:scale-110 transition-transform flex-shrink-0">
                                         <FaPhoneAlt size={14} />
                                     </div>
                                     <div>
                                         <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">Phone</span>
-                                        <span className="font-medium">+92 300 6715352</span>
+                                        <span className="font-medium break-all">+92 300 6715352</span>
                                     </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="mailto:muhammadfarhanzafar007@gmail.com" className="flex items-start gap-4 text-gray-400 hover:text-white transition-colors group">
-                                    <div className="mt-1 w-8 h-8 rounded bg-white/5 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                                    <div className="mt-1 w-8 h-8 rounded bg-white/5 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform flex-shrink-0">
                                         <FaEnvelope size={14} />
                                     </div>
                                     <div>
                                         <span className="block text-xs text-gray-500 uppercase tracking-wider mb-1">Email</span>
-                                        <span className="font-medium">muhammadfarhanzafar007@gmail.com</span>
+                                        <span className="font-medium break-all">muhammadfarhanzafar007@gmail.com</span>
                                     </div>
                                 </a>
                             </li>
                             <li className="flex items-start gap-4 text-gray-400 group">
-                                <div className="mt-1 w-8 h-8 rounded bg-white/5 flex items-center justify-center text-pink-400 group-hover:scale-110 transition-transform">
+                                <div className="mt-1 w-8 h-8 rounded bg-white/5 flex items-center justify-center text-pink-400 group-hover:scale-110 transition-transform flex-shrink-0">
                                     <FaMapMarkerAlt size={14} />
                                 </div>
                                 <div>
@@ -125,9 +125,9 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="border-t border-white/10 pt-8 flex items-center justify-center">
-                    <p className="text-gray-500 text-sm tracking-wide">
-                        &copy; {new Date().getFullYear()} Farhan Zafar. All rights reserved.
+                <div className="border-t border-white/10 pt-8 flex items-center justify-center md:justify-end">
+                    <p className="text-slate-500 text-xs md:text-sm tracking-wider font-light">
+                        Built with Precision by <span className="text-slate-300">Farhan Zafar</span>
                     </p>
                 </div>
             </div>

@@ -99,21 +99,21 @@ const Hero = () => {
     }, [text, isDeleting, loopNum, roles, typingSpeed]);
 
     return (
-        <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-transparent">
+        <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-transparent pt-20 md:pt-0">
             {/* Background Atmosphere */}
-            <div className="absolute inset-0 z-0">
-                <div className="absolute -top-20 -left-20 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow"></div>
-                <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px] mix-blend-screen"></div>
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute -top-20 -left-20 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-accent/10 rounded-full blur-[80px] md:blur-[120px] mix-blend-screen animate-pulse-slow"></div>
+                <div className="absolute bottom-0 right-0 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-purple-900/10 rounded-full blur-[80px] md:blur-[120px] mix-blend-screen"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 w-full grid md:grid-cols-2 gap-12 items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8 items-center min-h-[calc(100vh-80px)]">
 
                 {/* Left Content */}
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="text-center md:text-left pt-10 md:pt-0"
+                    className="text-center md:text-left order-2 md:order-1 flex flex-col items-center md:items-start"
                 >
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -125,73 +125,66 @@ const Hero = () => {
                         Available for hire
                     </motion.div>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-                        className="text-6xl md:text-8xl font-black text-white mb-2 tracking-tighter leading-none"
-                    >
+                    <h1 className="font-black text-white mb-0 tracking-tighter leading-[0.9] text-[clamp(3.5rem,8vw,6rem)]">
                         FARHAN
-                    </motion.h1>
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-                        className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-white mb-6 tracking-tighter leading-none"
-                    >
+                    </h1>
+                    <h1 className="font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-400 to-white mb-6 tracking-tighter leading-[0.9] text-[clamp(3.5rem,8vw,6rem)]">
                         ZAFAR
-                    </motion.h1>
+                    </h1>
 
                     <motion.div
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 1 }}
                         transition={{ delay: 0.5, duration: 0.8, ease: "circOut" }}
-                        className="h-1 w-20 bg-accent mb-8 mx-auto md:mx-0 origin-left"
+                        className="h-1 w-20 bg-accent mb-8 origin-center md:origin-left"
                     ></motion.div>
-                    <motion.h2
+
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6, duration: 0.6 }}
-                        className="text-xl md:text-2xl text-gray-400 font-mono mb-8 tracking-wide flex flex-col md:flex-row gap-2 md:items-center justify-center md:justify-start"
+                        className="h-8 mb-8" // Fixed height to prevent layout shift
                     >
-                        <span>CREATIVE</span>
-                        <span className="text-white font-bold relative">
-                            {text}
-                            <span className="animate-blink ml-1 border-r-2 border-accent h-6 inline-block align-middle"></span>
-                        </span>
-                    </motion.h2>
+                        <h2 className="text-xl md:text-2xl text-slate-400 font-mono tracking-wide flex flex-row gap-2 items-center justify-center md:justify-start">
+                            <span>INNOVATION</span>
+                            <span className="text-white font-bold relative">
+                                {text}
+                                <span className="animate-blink ml-1 border-r-2 border-accent h-5 md:h-6 inline-block align-middle"></span>
+                            </span>
+                        </h2>
+                    </motion.div>
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7, duration: 0.6 }}
-                        className="text-gray-500 max-w-lg mx-auto md:mx-0 mb-10 text-base md:text-lg leading-relaxed"
+                        className="text-slate-400 max-w-lg text-base md:text-lg leading-relaxed mb-10"
                     >
-                        Architecting scalable digital solutions with <span className="text-accent">React</span>, <span className="text-purple-400">Next.js</span>, <span className="text-green-400">Node.js</span>, and Cloud Infrastructure. Building full-cycle applications from pixel-perfect UIs to robust backends.
+                        Architecting scalable digital solutions with <span className="text-accent font-medium">React</span>, <span className="text-purple-400 font-medium">Next.js</span>, <span className="text-green-400 font-medium">Node.js</span>, and Cloud Infrastructure. Building full-cycle applications from pixel-perfect UIs to robust backends.
                     </motion.p>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.6 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+                        className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
                     >
                         <motion.a
                             href="#projects"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="px-8 py-4 bg-accent text-black font-bold rounded-none skew-x-[-10deg] hover:bg-white transition-colors flex items-center justify-center gap-2 group"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="px-8 py-4 bg-accent text-slate-950 font-bold text-center rounded hover:bg-white transition-colors flex items-center justify-center gap-2 group w-full sm:w-auto shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)]"
                         >
-                            <span className="skew-x-[10deg]">VIEW WORK</span>
-                            <FaArrowRight className="skew-x-[10deg] group-hover:translate-x-1 transition-transform" />
+                            <span>VIEW WORK</span>
+                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                         </motion.a>
                         <motion.a
                             href="#contact"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-none skew-x-[-10deg] hover:bg-white/5 transition-colors flex items-center justify-center"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="px-8 py-4 bg-transparent border border-white/10 text-white font-bold text-center rounded hover:bg-white/5 transition-colors flex items-center justify-center w-full sm:w-auto backdrop-blur-sm"
                         >
-                            <span className="skew-x-[10deg]">CONTACT ME</span>
+                            <span>CONTACT ME</span>
                         </motion.a>
                     </motion.div>
                 </motion.div>
@@ -201,57 +194,60 @@ const Hero = () => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="relative flex justify-center items-center h-[500px] w-full"
+                    className="relative flex justify-center items-center py-12 md:py-0 w-full order-1 md:order-2"
                 >
-                    {/* Glowing Core Background */}
-                    <div className="absolute w-[300px] h-[300px] bg-accent/20 rounded-full blur-[80px] animate-pulse-slow"></div>
+                    {/* Responsive Scaling Container */}
+                    <div className="relative w-[clamp(280px,50vw,500px)] h-[clamp(280px,50vw,500px)] flex items-center justify-center">
+                        {/* Glowing Core Background */}
+                        <div className="absolute inset-[15%] bg-accent/20 rounded-full blur-[60px] animate-pulse-slow"></div>
 
-                    {/* Orbit Rings (Decorative) */}
-                    <div className="absolute w-[400px] h-[400px] rounded-full border border-white/5 animate-spin-slow-reverse"></div>
-                    <div className="absolute w-[550px] h-[550px] rounded-full border border-white/5 animate-spin-slow"></div>
+                        {/* Orbit Rings (Decorative) */}
+                        <div className="absolute inset-[10%] rounded-full border border-white/5 animate-spin-slow-reverse"></div>
+                        <div className="absolute inset-0 rounded-full border border-white/5 animate-spin-slow"></div>
 
-                    {/* Floating Tech Icons in Orbit */}
-                    <div className="absolute inset-0 animate-spin-slow">
-                        <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-dark-card p-3 rounded-xl border border-white/10 shadow-lg transform -rotate-12">
-                            <FaReact className="text-3xl text-[#61DAFB]" />
-                        </div>
-                        <div className="absolute bottom-20 right-20 bg-dark-card p-3 rounded-xl border border-white/10 shadow-lg transform rotate-12">
-                            <SiNextdotjs className="text-3xl text-white" />
-                        </div>
-                        <div className="absolute top-1/2 left-0 bg-dark-card p-3 rounded-xl border border-white/10 shadow-lg transform -rotate-6">
-                            <FaNodeJs className="text-3xl text-[#68A063]" />
-                        </div>
-                    </div>
-
-                    {/* Central Profile Image Container */}
-                    <div className="relative z-10 w-64 h-64 md:w-80 md:h-80">
-                        {/* Glassmorphic/Tech border */}
-                        <div className="absolute inset-0 rounded-full border-2 border-accent/30 shadow-[0_0_50px_rgba(56,189,248,0.3)]"></div>
-                        <div className="absolute inset-2 rounded-full border border-white/10 border-dashed animate-spin-slow"></div>
-
-                        <div className="absolute inset-4 rounded-full overflow-hidden bg-gray-800">
-                            <img
-                                src={profileImg}
-                                alt="Farhan Zafar"
-                                className="w-full h-full object-cover hover:scale-110 transition-transform duration-700 grayscale hover:grayscale-0"
-                            />
-                        </div>
-
-                        {/* Floating Status Badge */}
-                        <motion.div
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 1 }}
-                            className="absolute bottom-0 right-4 bg-dark-card/90 backdrop-blur border border-white/10 px-4 py-2 rounded-lg shadow-xl"
-                        >
-                            <div className="flex items-center gap-2">
-                                <span className="text-2xl">⚡</span>
-                                <div>
-                                    <div className="text-[10px] text-gray-400 uppercase tracking-wider">Experience</div>
-                                    <div className="text-sm font-bold text-white">3+ Years</div>
-                                </div>
+                        {/* Floating Tech Icons in Orbit */}
+                        <div className="absolute inset-0 animate-spin-slow">
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-dark-card/80 backdrop-blur p-2 md:p-3 rounded-xl border border-white/10 shadow-lg transform -rotate-12">
+                                <FaReact className="text-2xl md:text-3xl text-[#61DAFB]" />
                             </div>
-                        </motion.div>
+                            <div className="absolute bottom-[15%] right-[10%] bg-dark-card/80 backdrop-blur p-2 md:p-3 rounded-xl border border-white/10 shadow-lg transform rotate-12">
+                                <SiNextdotjs className="text-2xl md:text-3xl text-white" />
+                            </div>
+                            <div className="absolute top-1/2 left-0 bg-dark-card/80 backdrop-blur p-2 md:p-3 rounded-xl border border-white/10 shadow-lg transform -rotate-6">
+                                <FaNodeJs className="text-2xl md:text-3xl text-[#68A063]" />
+                            </div>
+                        </div>
+
+                        {/* Central Profile Image Container */}
+                        <div className="relative z-10 w-[65%] h-[65%]">
+                            {/* Glassmorphic/Tech border */}
+                            <div className="absolute inset-0 rounded-full border-2 border-accent/30 shadow-[0_0_50px_rgba(56,189,248,0.2)]"></div>
+                            <div className="absolute inset-2 rounded-full border border-white/10 border-dashed animate-spin-slow"></div>
+
+                            <div className="absolute inset-4 rounded-full overflow-hidden bg-gray-800">
+                                <img
+                                    src={profileImg}
+                                    alt="Farhan Zafar"
+                                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-700 grayscale hover:grayscale-0"
+                                />
+                            </div>
+
+                            {/* Floating Status Badge */}
+                            <motion.div
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 1 }}
+                                className="absolute bottom-[5%] right-[5%] bg-dark-card/90 backdrop-blur border border-white/10 px-3 py-2 md:px-4 rounded-lg shadow-xl"
+                            >
+                                <div className="flex items-center gap-2">
+                                    <span className="text-lg md:text-xl">⚡</span>
+                                    <div>
+                                        <div className="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-wider leading-none mb-1">Experience</div>
+                                        <div className="text-xs md:text-sm font-bold text-white leading-none">3+ Years</div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
 
                 </motion.div>
