@@ -1,44 +1,81 @@
 import React from 'react';
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaArrowRight } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleScroll = (id) => {
+        const elementId = id.replace('#', '');
+
+        // If we are on the home page, scroll to the element
+        if (location.pathname === '/') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        } else {
+            // If not on home page, navigate to home and pass the target ID
+            navigate('/', { state: { targetId: elementId } });
+        }
+    };
+
     const socialLinks = [
         { icon: <FaGithub />, href: "https://github.com/mfarhan077", label: "GitHub" },
         { icon: <FaLinkedin />, href: "https://www.linkedin.com/in/farhan-zafar-121b05382/", label: "LinkedIn" },
-        // { icon: <FaTwitter />, href: "https://twitter.com", label: "Twitter" }, // Removed placeholder
         { icon: <FaEnvelope />, href: "mailto:muhammadfarhanzafar007@gmail.com", label: "Email" }
     ];
 
     const quickLinks = [
-        { name: "Home", href: "#home" },
-        { name: "About", href: "#about" },
-        { name: "Skills", href: "#skills" },
-        { name: "Projects", href: "#projects" },
-        { name: "Contact", href: "#contact" },
+        { name: "Home", id: "home" },
+        { name: "About", id: "about" },
+        { name: "Skills", id: "skills" },
+        { name: "Projects", id: "projects" },
+        { name: "Contact", id: "contact" },
     ];
 
     return (
-        <footer className="bg-[#02020a] border-t border-white/5 relative overflow-hidden pt-12 md:pt-16 pb-8">
-            {/* Background Glow */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute bottom-0 left-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-900/10 rounded-full blur-[80px] md:blur-[120px] mix-blend-screen"></div>
-                <div className="absolute bottom-0 right-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-900/10 rounded-full blur-[80px] md:blur-[120px] mix-blend-screen"></div>
+        <footer className="relative overflow-hidden bg-[#030305] pt-16 pb-8">
+            {/* Neon Top Border */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+
+            {/* Ambient Background Glow */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] mix-blend-screen" />
+                <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[120px] mix-blend-screen" />
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 md:mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-16">
 
                     {/* Brand Column */}
                     <div className="space-y-6">
-                        <h3 className="text-2xl font-black text-white tracking-tighter font-mono">
-                            <span className="text-terminal-cyan">&lt;</span>
-                            FarhanZafar
-                            <span className="text-terminal-cyan"> /&gt;</span>
-                        </h3>
-                        <p className="text-slate-400 leading-relaxed text-sm font-mono">
-                            Crafting state-of-the-art digital experiences with <span className="text-accent">React</span>, <span className="text-purple-400">Next.js</span>, and modern web technologies. Transforming ideas into pixel-perfect reality.
-                        </p>
-                        <div className="flex space-x-4">
+                        <motion.h3
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-3xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]"
+                        >
+                            <span className="text-cyan-400">&lt;</span>
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">FarhanZafar</span>
+                            <span className="text-cyan-400"> /&gt;</span>
+                        </motion.h3>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="text-slate-400 text-sm leading-relaxed max-w-xs"
+                        >
+                            Crafting state-of-the-art digital experiences with <span className="text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">React</span>, <span className="text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.5)]">Next.js</span>, and modern web technologies. Transforming ideas into pixel-perfect reality.
+                        </motion.p>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="flex space-x-4"
+                        >
                             {socialLinks.map((link, index) => (
                                 <a
                                     key={index}
@@ -46,100 +83,106 @@ const Footer = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={link.label}
-                                    className="w-10 h-10 rounded-full bg-dark-card border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-terminal-cyan/20 hover:border-terminal-cyan transition-all duration-300 shadow-[0_0_10px_rgba(88,166,255,0.1)] hover:shadow-[0_0_15px_rgba(88,166,255,0.4)]"
+                                    className="w-10 h-10 rounded-lg bg-slate-900/50 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-400/50 hover:bg-cyan-950/30 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300 group"
                                 >
-                                    {link.icon}
+                                    <span className="group-hover:scale-110 transition-transform duration-300">
+                                        {link.icon}
+                                    </span>
                                 </a>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
 
                     {/* Quick Links */}
                     <div>
-                        <h4 className="text-terminal-green font-bold mb-6 text-lg font-mono tracking-wider">
-                            &gt; Quick_Links
-                        </h4>
-                        <ul className="space-y-3">
+                        <motion.h4
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-white font-bold mb-8 text-lg tracking-wider drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"
+                        >
+                            Quick Links
+                        </motion.h4>
+                        <ul className="space-y-4">
                             {quickLinks.map((link, index) => (
-                                <li key={index}>
-                                    <a
-                                        href={link.href}
-                                        className="text-slate-400 hover:text-terminal-cyan transition-colors flex items-center gap-2 group text-sm font-mono"
+                                <motion.li
+                                    key={index}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                                >
+                                    <button
+                                        onClick={() => handleScroll(link.id)}
+                                        className="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-3 group text-sm bg-transparent border-none cursor-pointer p-0"
                                     >
-                                        <span className="text-accent opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">&gt;</span>
-                                        {link.name}
-                                    </a>
-                                </li>
+                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-600 group-hover:bg-cyan-400 group-hover:shadow-[0_0_8px_rgba(34,211,238,0.8)] transition-all duration-300"></span>
+                                        <span className="group-hover:translate-x-1 group-hover:text-shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-all duration-300">{link.name}</span>
+                                    </button>
+                                </motion.li>
                             ))}
                         </ul>
                     </div>
 
-                    {/* Newsletter & Contact */}
-                    <div className="lg:col-span-2 space-y-8">
-                        {/* Newsletter Widget */}
-                        <div className="bg-black/40 p-6 rounded-lg border border-slate-800 relative overflow-hidden group hover:border-terminal-cyan/30 transition-colors">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-terminal-cyan to-transparent opacity-20"></div>
-                            <h4 className="text-white font-bold mb-2 font-mono flex items-center gap-2">
-                                <span className="text-terminal-green text-xs">●</span> Subscribe.sh
-                            </h4>
-                            <p className="text-slate-400 text-xs mb-4 font-mono">Get the latest updates on new projects and tech articles.</p>
-                            <div className="flex gap-2 flex-col sm:flex-row">
-                                <div className="relative flex-grow">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-terminal-green font-mono text-xs">&gt;</span>
-                                    <input
-                                        type="email"
-                                        placeholder="Enter_email..."
-                                        className="bg-dark-bg border border-slate-700 rounded w-full pl-8 pr-4 py-2 text-sm text-terminal-cyan focus:outline-none focus:border-terminal-cyan font-mono placeholder:text-slate-600"
-                                    />
-                                </div>
-                                <button className="bg-terminal-cyan/10 border border-terminal-cyan text-terminal-cyan font-bold px-4 py-2 rounded text-sm hover:bg-terminal-cyan hover:text-dark-bg transition-all whitespace-nowrap font-mono">
-                                    [EXECUTE]
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Contact Info */}
-                        <ul className="space-y-4 pt-2">
-                            <li>
-                                <a href="tel:+923006715352" className="flex items-start gap-4 text-slate-400 hover:text-white transition-colors group">
-                                    <div className="mt-1 w-8 h-8 rounded bg-dark-card border border-white/5 flex items-center justify-center text-accent group-hover:border-accent group-hover:shadow-[0_0_10px_rgba(88,166,255,0.3)] transition-all flex-shrink-0">
-                                        <FaPhoneAlt size={12} />
-                                    </div>
-                                    <div className="font-mono">
-                                        <span className="block text-xs text-slate-500 uppercase tracking-wider mb-1">Phone</span>
-                                        <span className="text-sm">+92 300 6715352</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="mailto:muhammadfarhanzafar007@gmail.com" className="flex items-start gap-4 text-slate-400 hover:text-white transition-colors group">
-                                    <div className="mt-1 w-8 h-8 rounded bg-dark-card border border-white/5 flex items-center justify-center text-purple-400 group-hover:border-purple-400 group-hover:shadow-[0_0_10px_rgba(192,132,252,0.3)] transition-all flex-shrink-0">
-                                        <FaEnvelope size={12} />
-                                    </div>
-                                    <div className="font-mono">
-                                        <span className="block text-xs text-slate-500 uppercase tracking-wider mb-1">Email</span>
-                                        <span className="text-sm break-all">muhammadfarhanzafar007@gmail.com</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li className="flex items-start gap-4 text-slate-400 group">
-                                <div className="mt-1 w-8 h-8 rounded bg-dark-card border border-white/5 flex items-center justify-center text-pink-400 group-hover:border-pink-400 group-hover:shadow-[0_0_10px_rgba(244,114,182,0.3)] transition-all flex-shrink-0">
-                                    <FaMapMarkerAlt size={12} />
-                                </div>
-                                <div className="font-mono">
-                                    <span className="block text-xs text-slate-500 uppercase tracking-wider mb-1">Location</span>
-                                    <span className="text-sm">JDW Sugar Mill Unit 2, Machi Goth, Sadiq Abad, Punjab, Pakistan</span>
-                                </div>
-                            </li>
+                    {/* Contact Info */}
+                    <div className="space-y-6">
+                        <motion.h4
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-white font-bold mb-8 text-lg tracking-wider drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"
+                        >
+                            Contact
+                        </motion.h4>
+                        <ul className="space-y-6">
+                            {[
+                                { icon: <FaPhoneAlt size={12} />, label: "Phone", value: "+92 300 6715352", href: "tel:+923006715352", color: "text-cyan-400", shadow: "group-hover:shadow-[0_0_15px_rgba(34,211,238,0.4)]", border: "group-hover:border-cyan-400/50" },
+                                { icon: <FaEnvelope size={12} />, label: "Email", value: "muhammadfarhanzafar007@gmail.com", href: "mailto:muhammadfarhanzafar007@gmail.com", color: "text-purple-400", shadow: "group-hover:shadow-[0_0_15px_rgba(192,132,252,0.4)]", border: "group-hover:border-purple-400/50" },
+                                { icon: <FaMapMarkerAlt size={12} />, label: "Location", value: "JDW Sugar Mill Unit 2, Machi Goth, Sadiq Abad, Punjab, Pakistan", href: null, color: "text-pink-400", shadow: "group-hover:shadow-[0_0_15px_rgba(244,114,182,0.4)]", border: "group-hover:border-pink-400/50" }
+                            ].map((item, index) => (
+                                <motion.li
+                                    key={index}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                                >
+                                    {item.href ? (
+                                        <a href={item.href} className="flex items-start gap-4 text-slate-400 hover:text-white transition-colors group">
+                                            <div className={`mt-1 w-8 h-8 rounded-lg bg-slate-900/50 border border-slate-800 flex items-center justify-center ${item.color} ${item.border} ${item.shadow} transition-all duration-300 flex-shrink-0 group-hover:bg-opacity-80`}>
+                                                {item.icon}
+                                            </div>
+                                            <div>
+                                                <span className="block text-xs text-slate-500 uppercase tracking-wider mb-1 font-medium">{item.label}</span>
+                                                <span className="text-sm break-all group-hover:text-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-300">{item.value}</span>
+                                            </div>
+                                        </a>
+                                    ) : (
+                                        <div className="flex items-start gap-4 text-slate-400 group">
+                                            <div className={`mt-1 w-8 h-8 rounded-lg bg-slate-900/50 border border-slate-800 flex items-center justify-center ${item.color} ${item.border} ${item.shadow} transition-all duration-300 flex-shrink-0`}>
+                                                {item.icon}
+                                            </div>
+                                            <div>
+                                                <span className="block text-xs text-slate-500 uppercase tracking-wider mb-1 font-medium">{item.label}</span>
+                                                <span className="text-sm group-hover:text-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-300">{item.value}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </motion.li>
+                            ))}
                         </ul>
                     </div>
                 </div>
 
-                <div className="border-t border-white/10 border-dashed pt-8 flex items-center justify-center md:justify-end">
-                    <p className="text-slate-500 text-xs md:text-sm tracking-wider font-mono">
-                        <span className="text-terminal-green">//</span> Built with Precision by <span className="text-slate-300">Farhan Zafar</span>
+                {/* Bottom Bar */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    className="border-t border-white/5 pt-8 flex items-center justify-center"
+                >
+                    <p className="text-slate-500 text-sm font-medium tracking-wide">
+                        © 2026 Farhan Zafar. All rights reserved.
                     </p>
-                </div>
+                </motion.div>
             </div>
         </footer>
     );

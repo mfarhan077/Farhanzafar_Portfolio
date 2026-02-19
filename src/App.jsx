@@ -4,7 +4,7 @@ import Loader from './components/layout/Loader';
 import Home from './pages/Home';
 import ProjectDemo from './pages/ProjectDemo';
 import ThankYou from './pages/ThankYou';
-import StarryBackground from './components/layout/StarryBackground';
+import MolecularBackground from './components/layout/MolecularBackground';
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -14,7 +14,7 @@ function App() {
       <div className="min-h-screen bg-dark-bg text-slate-200 relative">
         {!isLoaded && <Loader onComplete={() => setIsLoaded(true)} />}
         <div className={`transition-opacity duration-1000 ${!isLoaded ? "opacity-0" : "opacity-100"}`}>
-          <StarryBackground />
+          <MolecularBackground />
           <div className="relative z-10">
             <Routes>
               <Route path="/" element={<Home />} />

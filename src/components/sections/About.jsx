@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaServer, FaDatabase, FaTools, FaLayerGroup, FaTerminal } from 'react-icons/fa';
 
 const About = () => {
+    // Typing Animation State
+    const [text, setText] = useState('');
+    const fullText = "> whoami";
+    const [startTyping, setStartTyping] = useState(false);
+
+    useEffect(() => {
+        if (startTyping) {
+            if (text.length < fullText.length) {
+                const timeout = setTimeout(() => {
+                    setText(fullText.slice(0, text.length + 1));
+                }, 100); // Typing speed
+                return () => clearTimeout(timeout);
+            }
+        }
+    }, [text, startTyping]);
+
     // Professional Config-style snippet
     const configSnippet = [
         { line: 1, text: <><span className="text-purple-400">const</span> <span className="text-yellow-300">developer</span> <span className="text-white">=</span> <span className="text-white">{'{'}</span></> },
@@ -40,16 +56,18 @@ const About = () => {
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        onViewportEnter={() => setStartTyping(true)}
                         transition={{ duration: 0.6 }}
                         className="order-2 lg:order-1"
                     >
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="text-terminal-cyan font-mono text-sm tracking-widest uppercase flex items-center gap-2">
-                                <FaTerminal size={12} />
-                                <span>&gt; whoami</span>
+                        {/* Animated Badge */}
+                        <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 rounded-full bg-terminal-cyan/5 border border-terminal-cyan/20 shadow-[0_0_15px_rgba(34,211,238,0.1)] backdrop-blur-sm">
+                            <FaTerminal className="text-terminal-cyan text-xs" />
+                            <span className="text-terminal-cyan font-mono text-sm tracking-widest uppercase flex items-center gap-1 font-bold">
+                                {text}
+                                <span className="animate-pulse w-2 h-4 bg-terminal-cyan inline-block"></span>
                             </span>
-                            <span className="h-px w-12 bg-terminal-cyan/30"></span>
                         </div>
 
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight font-mono">
