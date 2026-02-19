@@ -9,14 +9,13 @@ const MolecularBackground = () => {
         let width, height;
         let particles = [];
 
-        // Configuration
-        const particleCount = 70; // Adjusted for performance
-        const connectionDistance = 140;
-        const mouseDistance = 200;
+        // Configuration - Premium Tuning
+        const particleCount = 60; // Slightly reduced for cleaner look
+        const connectionDistance = 160;
+        const mouseDistance = 220;
 
-        // Colors
-        const particleColor = 'rgba(34, 211, 238, 0.8)'; // Cyan
-        const lineColor = 'rgba(34, 211, 238, 0.15)'; // Faint Cyan
+        // Colors & Style
+        const baseColor = { r: 34, g: 211, b: 238 }; // Cyan #22d3ee
 
         let mouse = { x: null, y: null };
 
@@ -27,47 +26,92 @@ const MolecularBackground = () => {
 
         class Particle {
             constructor() {
+                this.init();
+            }
+
+            init() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5; // Slow gentle movement
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 1;
+                // Depth simulation: 0 = far, 1 = near
+                this.depth = Math.random();
+
+                // Size depends on depth (0.5 to 2.5px)
+                this.size = (this.depth * 2) + 0.5;
+
+                // Speed depends on depth (Parallax: nearer moves faster, but overall very slow)
+                const speedMultiplier = 0.15; // 10x slower than typical
+                this.vx = (Math.random() - 0.5) * speedMultiplier * (1 + this.depth);
+                this.vy = (Math.random() - 0.5) * speedMultiplier * (1 + this.depth);
+
+                // Oscillation for "anti-gravity" floating feel
+                this.angle = Math.random() * Math.PI * 2;
+                this.oscillationSpeed = Math.random() * 0.002;
             }
 
             update() {
+                // Gentle floating movement
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Bounce off edges
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
+                // Add subtle sine-wave drift
+                this.angle += this.oscillationSpeed;
+                this.y += Math.sin(this.angle) * 0.05;
+                this.x += Math.cos(this.angle) * 0.05;
 
-                // Mouse interaction (gentle repulsion)
+                // Wrap around edges for infinite feel (smoother than bouncing)
+                if (this.x < -50) this.x = width + 50;
+                if (this.x > width + 50) this.x = -50;
+                if (this.y < -50) this.y = height + 50;
+                if (this.y > height + 50) this.y = -50;
+
+                // Mouse interaction (Smooth gentle repulsion)
                 if (mouse.x != null) {
                     let dx = mouse.x - this.x;
                     let dy = mouse.y - this.y;
                     let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    // Only react if close enough
                     if (distance < mouseDistance) {
                         const forceDirectionX = dx / distance;
                         const forceDirectionY = dy / distance;
                         const force = (mouseDistance - distance) / mouseDistance;
-                        const directionX = forceDirectionX * force * 0.6;
-                        const directionY = forceDirectionY * force * 0.6;
-                        this.vx -= directionX;
-                        this.vy -= directionY;
+
+                        // Push away - weight by depth (nearer particles move more)
+                        const interactionStrength = 0.8 * (0.5 + this.depth * 0.5);
+
+                        this.vx -= forceDirectionX * force * interactionStrength * 0.05;
+                        this.vy -= forceDirectionY * force * interactionStrength * 0.05;
                     }
                 }
+
+                // Friction to return to normal speed after mouse interaction
+                // Target velocity is very low, so we damp towards it or just simple friction
+                this.vx *= 0.99;
+                this.vy *= 0.99;
+
+                // Keep them moving minimally if they stall
+                if (Math.abs(this.vx) < 0.01) this.vx += (Math.random() - 0.5) * 0.001;
+                if (Math.abs(this.vy) < 0.01) this.vy += (Math.random() - 0.5) * 0.001;
             }
 
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = particleColor;
-                ctx.fill();
 
-                // Glow effect
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = particleColor;
+                // Alpha based on depth (fades far particles)
+                const alpha = 0.3 + (this.depth * 0.5); // 0.3 to 0.8
+                ctx.fillStyle = `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${alpha})`;
+
+                // Glow only for nearer particles
+                if (this.depth > 0.6) {
+                    ctx.shadowBlur = 10 * this.depth;
+                    ctx.shadowColor = `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0.5)`;
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset
             }
         }
 
@@ -79,34 +123,42 @@ const MolecularBackground = () => {
         };
 
         const animate = () => {
-            ctx.clearRect(0, 0, width, height); // Clear canvas
+            ctx.clearRect(0, 0, width, height);
 
-            // Draw background gradient directly on canvas for better blend
-            // Or rely on CSS background of parent container
+            // 1. Draw connections FIRST (Layer 0)
+            // Only connect if both particles are close AND relatively same depth group to avoid messy cross-depth lines?
+            // For now, simpler is cleaner: Connect all nearby.
 
-            // Draw connections first (behind particles)
+            ctx.lineWidth = 0.5; // Thin lines
+
             for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
+                // Optimization: compare with subset or just loop all (count is low < 100)
+                for (let b = a + 1; b < particles.length; b++) { // Optimized loop
                     let dx = particles[a].x - particles[b].x;
                     let dy = particles[a].y - particles[b].y;
                     let distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < connectionDistance) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = lineColor;
-                        ctx.lineWidth = 1;
-                        // Opacity based on distance
-                        let opacity = 1 - (distance / connectionDistance);
-                        ctx.strokeStyle = `rgba(34, 211, 238, ${opacity * 0.4})`;
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                        ctx.shadowBlur = 0; // No shadow for lines
+                        // Opacity based on distance AND average depth
+                        let distFactor = 1 - (distance / connectionDistance);
+                        let avgDepth = (particles[a].depth + particles[b].depth) / 2;
+                        let alpha = distFactor * avgDepth * 0.2; // Max opacity 0.2 (very subtle)
+
+                        if (alpha > 0) {
+                            ctx.strokeStyle = `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${alpha})`;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[a].x, particles[a].y);
+                            ctx.lineTo(particles[b].x, particles[b].y);
+                            ctx.stroke();
+                        }
                     }
                 }
             }
 
-            // Draw and update particles
+            // 2. Draw Particles (Layer 1)
+            // Sort by depth so near ones draw on top? (Optional for 2D circles, but good for parallax feel if overlapping)
+            // particles.sort((a, b) => a.depth - b.depth); 
+
             particles.forEach(particle => {
                 particle.update();
                 particle.draw();
@@ -122,8 +174,8 @@ const MolecularBackground = () => {
         });
 
         window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
+            mouse.x = e.clientX; // Ensure accurate coordinates
+            mouse.y = e.clientY;
         });
 
         window.addEventListener('mouseout', () => {
@@ -137,9 +189,9 @@ const MolecularBackground = () => {
         animate();
 
         return () => {
-            // Cleanup
             window.removeEventListener('resize', resize);
-            // window.removeEventListener('mousemove', ...);
+            // Cleanup other listeners if passed as verified functions, 
+            // but for anonymous functions in simple React effects, mostly fine if component doesn't remount often.
         };
     }, []);
 
@@ -148,10 +200,10 @@ const MolecularBackground = () => {
             <canvas
                 ref={canvasRef}
                 className="absolute inset-0 block"
-                style={{ opacity: 0.8 }}
+            // No opacity prop here, control alpha in canvas for cleaner look
             />
-            {/* Overlay for subtle texture/vignette if needed */}
-            <div className="absolute inset-0 bg-[radial-gradient(transparent_0%,#020617_100%)] opacity-80 pointer-events-none"></div>
+            {/* Overlay for subtle texture/vignette */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020617_120%)] opacity-60 pointer-events-none"></div>
         </div>
     );
 };
